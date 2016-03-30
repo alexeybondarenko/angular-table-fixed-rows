@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('app', [
-  'table-fixed-rows'
+  'table-fixed-rows',
+  'dragcolumns'
 ]);
 
 angular.module('app').controller('AppController', function ($scope, $http) {
