@@ -4,6 +4,7 @@
     "Alexey Bondarenko <alexeybondarenko@me.com>"
   ],
   "description": "AngularJS module for fixed rows in table",
+  "repository": "git@github.com:alexeybondarenko/angular-table-fixed-rows.git",
   "main": "src/angular-table-fixed-rows.js",
   "moduleType": [],
   "keywords": [
