@@ -1,0 +1,26 @@
+{
+  "name": "angular-table-fixed-rows",
+  "authors": [
+    "Alexey Bondarenko <alexeybondarenko@me.com>"
+  ],
+  "description": "AngularJS module for fixed rows in table",
+  "main": "src/angular-table-fixed-rows.js",
+  "moduleType": [],
+  "keywords": [
+    "angularjs",
+    "tables",
+    "header"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.3"
+  }
+}
