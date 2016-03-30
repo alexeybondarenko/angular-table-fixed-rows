@@ -20,8 +20,8 @@
 <h3>Drag column</h3>
 <br>
 
-<div class="table-responsive">
-  <table class="table table-bordered" dragcolumns="table.headers" table-fixed>
+<div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+  <table class="table table-bordered" dragcolumns="table.headers" dragcolumns-callback="onReorder"  table-fixed>
     <thead table-fixed-row>
     <tr>
       <th>Index</th>

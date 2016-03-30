@@ -75,45 +75,54 @@ angular.module('table-fixed-rows', [])
 
         var $$element = null,
           $$sourceTableElement = null,
-          $$clonedElement = null;
+          $$sourceRowElement = null,
+          $$clonedElement = null,
+          $$containerElement = null,
+          $$containerElementCoords = null;
 
-        this.init = function (el, tableEl) {
+        this.init = function (el, tableEl, containerEl) {
 
           if ($$element) {
             throw new Error('controller already initialized. call destroy method and after re-init');
           }
           $$sourceTableElement = angular.element(tableEl);
 
+          $$sourceRowElement = el;
+
           $$element = angular.element(tableEl[0].cloneNode(false));
-          this.refresh(el);
+          this.refresh();
 
           $$element.addClass('table-fixed-row');
           this.unstick();
 
-          angular.element(document.body).append($$element);
+          $$containerElement = containerEl;
+          $$containerElement.addClass('table-fixed-row-container');
 
+          $$containerElementCoords = getCoords($$containerElement[0]);
+          $$containerElement.append($$element);
 
         };
-        this.refresh = debounce(function (el) {
+        this.refresh = debounce(function () {
+          console.log('refresh');
           if ($$clonedElement) {
             $$clonedElement.remove();
           }
-          [].forEach.call(el[0].querySelectorAll('td,th'), function (cellItem) {
+          [].forEach.call($$sourceRowElement[0].querySelectorAll('td,th'), function (cellItem) {
             cellItem.style.width = cellItem.getBoundingClientRect().width + 'px';
           });
           $$element.css({
             width: $$sourceTableElement[0].getBoundingClientRect().width + 'px'
           });
 
-          $$clonedElement = el.clone(true);
-
+          $$clonedElement = $$sourceRowElement.clone(false);
           $$element.append($$clonedElement);
+
         }, 50);
 
         this.stick = function (top) {
           $$element.css({
             display: '',
-            top: top + 'px'
+            top: $$containerElement[0].scrollTop + top - $$containerElementCoords.top + 'px'
           });
         };
         this.unstick = function () {
@@ -123,26 +132,34 @@ angular.module('table-fixed-rows', [])
         };
         this.destroy = function () {
           $$element.remove();
+          $$containerElement.removeClass('table-fixed-row-container');
         };
       },
       link: function (scope, el, attrs, ctrl) {
 
         var tableEl = getClosest(el[0], 'table');
         if (!tableEl) throw new Error('table element not found up the dom tree');
-        ctrl.init(el, angular.element(tableEl));
+
+        tableEl = angular.element(tableEl);
+
+        var containerEl = tableEl.parent();
+        ctrl.init(el, tableEl, containerEl);
 
         var coords = getCoords(el[0]);
-        angular.element(window).bind('scroll', function () {
+
+        var onScroll = function (e) {
           var scrolled = window.pageYOffset || document.documentElement.scrollTop;
           if (scrolled > coords.top) {
-            ctrl.stick(scrolled);
+            ctrl.stick();
           } else {
             ctrl.unstick();
           }
-        });
+        };
+        angular.element(window).bind('scroll', onScroll);
 
         scope.$on('$destroy', function () {
           ctrl.destroy();
+          angular.element(window).unbind('scroll', onScroll);
         });
 
         el.on('DOMSubtreeModified propertychange', function () {

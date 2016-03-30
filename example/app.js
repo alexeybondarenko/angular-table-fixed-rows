@@ -27,4 +27,12 @@ angular.module('app').controller('AppController', function ($scope, $http) {
     data: []
   };
 
+  $scope.onReorder = function () {
+    //$scope.$broadcast('table-fixed-rows:refresh');
+  };
+
+  $scope.$on('filter.header', function () {
+    $scope.$broadcast('table-fixed-rows:refresh');
+  });
+
 });

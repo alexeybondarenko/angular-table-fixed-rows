@@ -6,4 +6,7 @@
   .table-fixed-row td, .table-fixed-row th {
     overflow: hidden; }
 
+.table-fixed-row-container {
+  position: relative; }
+
 /*# sourceMappingURL=angular-table-fixed-rows.css.map */
