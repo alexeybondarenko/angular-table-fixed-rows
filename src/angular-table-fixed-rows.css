@@ -1,0 +1,9 @@
+.table-fixed-row {
+  table-layout: fixed;
+  position: absolute;
+  top: 0;
+  background: white; }
+  .table-fixed-row td, .table-fixed-row th {
+    overflow: hidden; }
+
+/*# sourceMappingURL=angular-table-fixed-rows.css.map */
