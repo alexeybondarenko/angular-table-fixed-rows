@@ -103,7 +103,7 @@ angular.module('table-fixed-rows', [])
 
         };
         this.refresh = debounce(function () {
-          console.log('refresh');
+
           if ($$clonedElement) {
             $$clonedElement.remove();
           }
@@ -119,10 +119,10 @@ angular.module('table-fixed-rows', [])
 
         }, 50);
 
-        this.stick = function (top) {
+        this.stick = function (commonScroll) {
           $$element.css({
             display: '',
-            top: $$containerElement[0].scrollTop + top - $$containerElementCoords.top + 'px'
+            top: commonScroll + 'px'
           });
         };
         this.unstick = function () {
@@ -146,20 +146,36 @@ angular.module('table-fixed-rows', [])
         ctrl.init(el, tableEl, containerEl);
 
         var coords = getCoords(el[0]);
+        var containerCoords = getCoords(containerEl[0]);
 
+        var topOffset = coords.top - containerCoords.top;
         var onScroll = function (e) {
-          var scrolled = window.pageYOffset || document.documentElement.scrollTop;
-          if (scrolled > coords.top) {
-            ctrl.stick();
-          } else {
+          var windowScroll = window.pageYOffset || document.documentElement.scrollTop;
+          var containerScroll = containerEl[0].scrollTop;
+          var commonScroll = windowScroll + containerScroll;
+
+          if (commonScroll > coords.top && (containerCoords.top - windowScroll) < 0) { // scroll window and container
+            ctrl.stick(commonScroll - containerCoords.top);
+          } else if (containerScroll > topOffset) {
+            ctrl.stick(containerScroll); // scroll inside container
+          }
+
+          else {
             ctrl.unstick();
           }
         };
-        angular.element(window).bind('scroll', onScroll);
+
+        //.bind('scroll', function () {
+        //
+
+        var $windowEl = angular.element(window);
+        $windowEl.bind('scroll', onScroll);
+        containerEl.bind('scroll', onScroll);
 
         scope.$on('$destroy', function () {
           ctrl.destroy();
-          angular.element(window).unbind('scroll', onScroll);
+          containerEl.unbind('scroll', onScroll);
+          $windowEl.unbind('scroll', onScroll);
         });
 
         el.on('DOMSubtreeModified propertychange', function () {
