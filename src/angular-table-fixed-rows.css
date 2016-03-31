@@ -4,8 +4,6 @@
   top: 0;
   background: white;
   max-width: none; }
-  .table-fixed-row td, .table-fixed-row th {
-    overflow: hidden; }
 
 .table-fixed-row-container {
   position: relative; }
