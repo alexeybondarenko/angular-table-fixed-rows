@@ -19,7 +19,11 @@
 
 <h3>Drag column</h3>
 <br>
-
+<form>
+  <div class="form-group">
+    <input type="text" ng-model="filter.header" placeholder="Filter columns headers..." class="form-control">
+  </div>
+</form>
 <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
 <!--<div class="table-responsive">-->
 
@@ -51,11 +55,6 @@
     </tr>
     </tbody>
   </table>
-</div>
-<div class="form-inline">
-  <div class="form-group">
-    <input type="text" ng-model="filter.header" class="form-control">
-  </div>
 </div>
 <div>
 
