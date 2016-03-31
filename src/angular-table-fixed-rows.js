@@ -2,7 +2,7 @@
 
 angular.module('table-fixed-rows', [])
 
-  .directive('tableFixedRow', function () {
+  .directive('tableFixedRow', function ($timeout) {
 
     function getCoords(elem) {
 
@@ -57,10 +57,10 @@ angular.module('table-fixed-rows', [])
 
     function debounce(func, wait, immediate) {
       var timeout;
-      return function() {
+      return function () {
         var context = this, args = arguments;
         clearTimeout(timeout);
-        timeout = setTimeout(function() {
+        timeout = setTimeout(function () {
           timeout = null;
           if (!immediate) func.apply(context, args);
         }, wait);
@@ -110,8 +110,9 @@ angular.module('table-fixed-rows', [])
           [].forEach.call($$sourceRowElement[0].querySelectorAll('td,th'), function (cellItem) {
             cellItem.style.width = cellItem.getBoundingClientRect().width + 'px';
           });
+
           $$element.css({
-            width: $$sourceTableElement[0].getBoundingClientRect().width + 'px'
+            width: $$sourceTableElement[0].scrollWidth + 'px'
           });
 
           $$clonedElement = $$sourceRowElement.clone(false);
