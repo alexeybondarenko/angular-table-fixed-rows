@@ -146,11 +146,13 @@ angular.module('table-fixed-rows', [])
         var containerEl = tableEl.parent();
         ctrl.init(el, tableEl, containerEl);
 
-        var coords = getCoords(el[0]);
-        var containerCoords = getCoords(containerEl[0]);
-
-        var topOffset = coords.top - containerCoords.top;
         var onScroll = function (e) {
+
+          var coords = getCoords(el[0]);
+          var containerCoords = getCoords(containerEl[0]);
+
+          var topOffset = coords.top - containerCoords.top;
+
           var windowScroll = window.pageYOffset || document.documentElement.scrollTop;
           var containerScroll = containerEl[0].scrollTop;
           var commonScroll = windowScroll + containerScroll;
